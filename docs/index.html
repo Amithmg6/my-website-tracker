@@ -168,7 +168,8 @@
                     if (!parsedWebsites[category]) {
                         parsedWebsites[category] = [];
                     }
-                    if (!parsedWebses[category].some(link => link.url === url)) {
+                    // FIX: Corrected typo from parsedWebses to parsedWebsites
+                    if (!parsedWebsites[category].some(link => link.url === url)) {
                         parsedWebsites[category].push({ url: url, title: title });
                     }
                 }

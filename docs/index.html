@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Tracker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght='400;500;600;700'&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3ffef; /* Light green-gray background */
+        }
+        /* Custom CSS for the plus/minus icon transition */
+        .icon-rotate {
+            transition: transform 0.3s ease-in-out;
+        }
+        .icon-rotate.rotated {
+            transform: rotate(45deg); /* Rotates plus to an 'x' or just a diagonal line */
+        }
+        /* Custom scrollbar for category content */
+        .category-content-scroll {
+            max-height: 0; /* Initially collapsed */
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding-top 0.5s ease-out, padding-bottom 0.5s ease-out;
+        }
+        .category-content-scroll.expanded {
+            max-height: 300px; /* Max height when expanded, adjust as needed */
+            overflow-y: auto; /* Enable vertical scroll */
+            padding-top: 0.5rem; /* Add some padding when expanded */
+            padding-bottom: 0.5rem;
+        }
+        .category-content-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .category-content-scroll::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        .category-content-scroll::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .category-content-scroll::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 md:p-8 mt-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">Website Tracker</h1>
+
+        <!-- Add New Website Section - Now for in-memory display only -->
+        <div class="mb-8 p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-200">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Add New Website (Temporary)</h2>
+            <p class="text-sm text-yellow-700 mb-4">
+                Note: Websites added here are for temporary display only and will NOT be saved to your `websites.txt` file.
+                To permanently add or delete websites, please edit the `websites.txt` file in your GitHub repository.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="col-span-1 md:col-span-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="websiteCategory" placeholder="Category (e.g., Work, Social)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <button id="addWebsiteBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Add Website to Display
+            </button>
+            <div id="messageBox" class="mt-4 p-3 rounded-lg text-sm text-center hidden"></div>
+        </div>
+
+        <!-- Import Websites Section - Now for in-memory display only -->
+        <div class="mb-8 p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-200">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Import Websites (Temporary)</h2>
+            <p class="text-sm text-yellow-700 mb-4">
+                Paste your websites here (URL,Category per line). This will update the display temporarily but will NOT save to your `websites.txt` file.
+            </p>
+            <textarea id="importWebsitesTextarea" rows="6" placeholder="Paste your websites here, one per line, e.g.:&#10;https://www.google.com,Search Engines&#10;https://github.com,Development" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"></textarea>
+            <button id="importWebsitesBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Import Websites to Display
+            </button>
+        </div>
+
+        <!-- Website Categories Section -->
+        <div id="categoriesContainer" class="space-y-4">
+            <!-- Categories will be rendered here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Current in-memory representation of websites.
+        // This will be loaded from websites.txt and updated by the temporary add/delete functions.
+        let currentWebsites = {};
+
+        // Function to show messages in the message box
+        function showMessageBox(message, type = 'info') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.className = 'mt-4 p-3 rounded-lg text-sm text-center'; // Reset classes
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-100', 'text-green-700');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-100', 'text-red-700');
+            } else {
+                messageBox.classList.add('bg-blue-100', 'text-blue-700');
+            }
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to fetch and parse websites from websites.txt
+        async function fetchWebsitesFromFile() {
+            try {
+                const response = await fetch('websites.txt');
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.warn("websites.txt not found. Starting with an empty list.");
+                        showMessageBox("websites.txt not found. Please create it in your repository.", "info");
+                        return {};
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                const lines = text.trim().split('\n');
+                const parsedWebsites = {};
+                let errorCount = 0;
+
+                for (const line of lines) {
+                    const trimmedLine = line.trim();
+                    if (!trimmedLine) continue;
+
+                    const parts = trimmedLine.split(',');
+                    if (parts.length < 2) {
+                        console.warn(`Skipping malformed line in websites.txt: ${trimmedLine}`);
+                        errorCount++;
+                        continue;
+                    }
+
+                    let url = parts[0].trim();
+                    let category = parts.slice(1).join(',').trim();
+
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                    }
+                    category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+                    let title;
+                    try {
+                        const urlObj = new URL(url);
+                        title = urlObj.hostname.replace('www.', '');
+                    } catch (e) {
+                        console.warn(`Invalid URL in websites.txt: ${url}`);
+                        errorCount++;
+                        continue;
+                    }
+
+                    if (!parsedWebsites[category]) {
+                        parsedWebsites[category] = [];
+                    }
+                    // Prevent duplicates from the file itself
+                    if (!parsedWebsites[category].some(link => link.url === url)) {
+                        parsedWebsites[category].push({ url: url, title: title });
+                    }
+                }
+                if (errorCount > 0) {
+                    showMessageBox(`Loaded websites with ${errorCount} error(s) from websites.txt. Check console for details.`, 'error');
+                } else {
+                    showMessageBox("Websites loaded successfully from websites.txt!", "success");
+                }
+                return parsedWebsites;
+
+            } catch (error) {
+                console.error("Error fetching websites.txt:", error);
+                showMessageBox(`Error loading websites from file: ${error.message}`, 'error');
+                return {}; // Return empty object on error
+            }
+        }
+
+        // Function to render websites
+        function renderWebsites(websites) {
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            categoriesContainer.innerHTML = ''; // Clear previous content
+
+            if (Object.keys(websites).length === 0) {
+                categoriesContainer.innerHTML = `
+                    <p class="text-center text-gray-500 text-lg mt-8">No websites loaded. Please add some via the import section or edit websites.txt.</p>
+                `;
+                return;
+            }
+
+            // Sort categories alphabetically
+            const sortedCategories = Object.keys(websites).sort((a, b) => a.localeCompare(b));
+
+            sortedCategories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'bg-gray-100 rounded-lg shadow-sm overflow-hidden';
+
+                const header = document.createElement('div');
+                header.className = 'flex justify-between items-center p-4 cursor-pointer select-none bg-gray-200 hover:bg-gray-300 transition duration-200 ease-in-out rounded-t-lg';
+                header.innerHTML = `
+                    <h3 class="text-lg font-semibold text-gray-800">${category}</h3>
+                    <span class="text-gray-600 text-2xl font-bold icon-rotate">+</span>
+                `;
+                categoryDiv.appendChild(header);
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'category-content-scroll'; // Custom class for scroll and collapse
+                contentDiv.style.maxHeight = '0'; // Initially collapsed
+
+                const ul = document.createElement('ul');
+                ul.className = 'list-disc list-inside space-y-2 p-4 pt-0'; // Padding adjusted for scroll container
+
+                // Sort links alphabetically by title
+                const sortedLinks = websites[category].sort((a, b) => a.title.localeCompare(b.title));
+
+                sortedLinks.forEach(link => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center text-gray-700';
+                    li.innerHTML = `
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline truncate flex-grow mr-2">${link.title}</a>
+                        <button data-url="${link.url}" data-category="${category}" class="delete-btn text-red-500 hover:text-red-700 text-sm font-semibold p-1 rounded-md transition duration-200">Delete</button>
+                    `;
+                    ul.appendChild(li);
+                });
+
+                contentDiv.appendChild(ul);
+                categoryDiv.appendChild(contentDiv);
+                categoriesContainer.appendChild(categoryDiv);
+
+                // Add event listener for collapsing/expanding
+                header.addEventListener('click', () => {
+                    const isExpanded = contentDiv.classList.toggle('expanded');
+                    const icon = header.querySelector('.icon-rotate');
+                    icon.classList.toggle('rotated', isExpanded); // Rotate icon for visual feedback
+                });
+            });
+
+            // Add event listeners for delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const urlToDelete = event.target.dataset.url;
+                    const categoryToDeleteFrom = event.target.dataset.category;
+                    deleteWebsite(categoryToDeleteFrom, urlToDelete);
+                });
+            });
+        }
+
+        // Function to add a single new website to the in-memory data
+        function addSingleWebsiteToMemory(url, category) {
+            if (!url || !category) {
+                return { success: false, message: 'URL and Category cannot be empty.' };
+            }
+
+            // Basic URL validation and normalization
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url; // Prepend https:// if missing
+            }
+
+            // Capitalize first letter of category for consistent display
+            category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+            // Get the title from the URL (simple approach, could be improved with fetch)
+            let title;
+            try {
+                const urlObj = new URL(url);
+                title = urlObj.hostname.replace('www.', ''); // Use hostname as title
+            } catch (e) {
+                return { success: false, message: `Invalid URL: ${url}` };
+            }
+
+            // Check if URL already exists in the category
+            if (currentWebsites[category] && currentWebsites[category].some(link => link.url === url)) {
+                return { success: false, message: 'This URL already exists in this category!' };
+            }
+
+            if (!currentWebsites[category]) {
+                currentWebsites[category] = [];
+            }
+            currentWebsites[category].push({ url: url, title: title });
+
+            // Re-render the display
+            renderWebsites(currentWebsites);
+
+            return { success: true, message: 'Added to display.' };
+        }
+
+        // Event listener for adding a single website
+        document.getElementById('addWebsiteBtn').addEventListener('click', () => {
+            const urlInput = document.getElementById('websiteUrl');
+            const categoryInput = document.getElementById('websiteCategory');
+            const url = urlInput.value.trim();
+            const category = categoryInput.value.trim();
+
+            const result = addSingleWebsiteToMemory(url, category);
+
+            if (result.success) {
+                showMessageBox('Website added to display (not saved to file)!', 'success');
+                urlInput.value = '';
+                categoryInput.value = '';
+            } else {
+                showMessageBox(result.message, 'error');
+            }
+        });
+
+        // Event listener for importing multiple websites
+        document.getElementById('importWebsitesBtn').addEventListener('click', () => {
+            const textarea = document.getElementById('importWebsitesTextarea');
+            const lines = textarea.value.trim().split('\n');
+            let importedCount = 0;
+            let errorCount = 0;
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                if (!trimmedLine) continue; // Skip empty lines
+
+                const parts = trimmedLine.split(',');
+                if (parts.length < 2) {
+                    console.warn(`Skipping malformed line: ${trimmedLine}`);
+                    errorCount++;
+                    continue;
+                }
+
+                const url = parts[0].trim();
+                const category = parts.slice(1).join(',').trim(); // Rejoin if category has commas
+
+                const result = addSingleWebsiteToMemory(url, category);
+                if (result.success) {
+                    importedCount++;
+                } else {
+                    console.warn(`Failed to import: ${url} - ${result.message}`);
+                    errorCount++;
+                }
+            }
+
+            if (importedCount > 0) {
+                showMessageBox(`Successfully imported ${importedCount} website(s) to display. ${errorCount > 0 ? `(${errorCount} failed)` : ''} (not saved to file!)`, 'success');
+                textarea.value = ''; // Clear textarea after import
+            } else if (errorCount > 0) {
+                showMessageBox(`No websites imported to display. ${errorCount} failed due to errors.`, 'error');
+            } else {
+                showMessageBox('No valid websites found to import.', 'info');
+            }
+        });
+
+        // Function to delete a website from the in-memory data
+        function deleteWebsite(category, url) {
+            if (currentWebsites[category]) {
+                currentWebsites[category] = currentWebsites[category].filter(link => link.url !== url);
+
+                // If category becomes empty, remove it
+                if (currentWebsites[category].length === 0) {
+                    delete currentWebsites[category];
+                }
+
+                // Re-render the display
+                renderWebsites(currentWebsites);
+                showMessageBox('Website deleted from display (not saved to file)!', 'success');
+            }
+        }
+
+        // On page load, fetch websites from the text file
+        window.onload = async function() {
+            currentWebsites = await fetchWebsitesFromFile();
+            renderWebsites(currentWebsites);
+        };
+
+    </script>
+</body>
+</html>

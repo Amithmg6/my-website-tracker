@@ -121,8 +121,8 @@
 
         async function fetchWebsitesFromFile() {
             try {
-                const fileUrl = new URL('websites.txt', window.location.href).toString();
-                const response = await fetch(fileUrl);
+                // Changed to directly fetch 'websites.txt' without constructing a URL object
+                const response = await fetch('websites.txt');
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.warn("websites.txt not found. Starting with an empty list.");
@@ -168,7 +168,6 @@
                     if (!parsedWebsites[category]) {
                         parsedWebsites[category] = [];
                     }
-                    // FIX: Corrected typo from parsedWebses to parsedWebsites
                     if (!parsedWebsites[category].some(link => link.url === url)) {
                         parsedWebsites[category].push({ url: url, title: title });
                     }

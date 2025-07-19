@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Tracker</title>
+    <title>Website Tracker: Your Digital Directory</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #e2f0f4; /* Light blue-green background */
+            background-color: #f8f9fa; /* Very light gray/off-white for a clean canvas */
+            color: #343a40; /* Dark gray for general text */
         }
-        /* Custom CSS for the plus/minus icon transition */
-        .icon-rotate {
+        /* Custom CSS for the expand/collapse arrow icon */
+        .arrow-icon {
             transition: transform 0.3s ease-in-out;
         }
-        .icon-rotate.rotated {
-            transform: rotate(45deg); /* Rotates plus to an 'x' or just a diagonal line */
+        .arrow-icon.rotated {
+            transform: rotate(180deg); /* Rotates arrow to point up */
         }
         /* Custom scrollbar for category content */
         .category-content-scroll {
@@ -27,100 +28,105 @@
             transition: max-height 0.5s ease-out, padding-top 0.5s ease-out, padding-bottom 0.5s ease-out;
         }
         .category-content-scroll.expanded {
-            max-height: 200px; /* Adjusted max height to comfortably show 5-6 links */
+            max-height: 250px; /* Height to comfortably show ~5-6 links */
             overflow-y: auto; /* Enable vertical scroll */
-            padding-top: 0.5rem; /* Add some padding when expanded */
-            padding-bottom: 0.5rem;
+            padding-top: 1rem; /* More padding when expanded */
+            padding-bottom: 1rem;
         }
         .category-content-scroll::-webkit-scrollbar {
             width: 8px;
         }
         .category-content-scroll::-webkit-scrollbar-track {
-            background: #e0e0e0;
+            background: #e9ecef; /* Lighter track */
             border-radius: 10px;
         }
         .category-content-scroll::-webkit-scrollbar-thumb {
-            background: #888;
+            background: #adb5bd; /* Muted gray thumb */
             border-radius: 10px;
         }
         .category-content-scroll::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: #6c757d; /* Darker on hover */
+        }
+        /* Styling for the main section headers like "North India" in the image */
+        .main-section-header {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #343a40; /* text-gray-800 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 3px solid #34d399; /* border-b-3 border-emerald-500 */
+            display: inline-block; /* To make border-bottom only as wide as text */
         }
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen p-4">
+<body class="flex flex-col items-center min-h-screen p-8 md:p-12">
 
-    <div class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 md:p-8 mt-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">Website Tracker</h1>
+    <div class="w-full max-w-6xl bg-white shadow-xl rounded-2xl p-10 md:p-12 lg:p-16 mt-8 mb-12">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-center text-gray-800 mb-4 tracking-tight leading-tight">
+            Website Tracker: <span class="text-emerald-600">Your Digital Directory</span>
+        </h1>
+        <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Explore your curated collection of websites, organized by category for quick access and efficient browsing.
+            To manage your list permanently, update the `websites.txt` file in your GitHub repository.
+        </p>
 
-        <!-- Add New Website Section - Now for in-memory display only -->
-        <div class="mb-8 p-6 bg-orange-50 rounded-lg shadow-sm border border-orange-200">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Add New Website (Temporary)</h2>
-            <p class="text-sm text-orange-700 mb-4">
-                Note: Websites added here are for temporary display only and will NOT be saved to your `websites.txt` file.
-                To permanently add or delete websites, please edit the `websites.txt` file in your GitHub repository.
+        <!-- Check Website Status Section -->
+        <div class="mb-10 p-8 bg-gray-50 rounded-xl shadow-md border border-gray-100">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Check Website Status</h2>
+            <p class="text-base text-gray-700 mb-6 leading-relaxed">
+                Enter a website URL to check if it's already listed in your directory.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="col-span-1 md:col-span-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                <input type="text" id="websiteCategory" placeholder="Category (e.g., Work, Social)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+            <div class="grid grid-cols-1 gap-6 mb-6"> <!-- Removed md:grid-cols-3 and col-span-1 md:col-span-2 -->
+                <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700 placeholder-gray-400 text-base" required>
+                <!-- Removed input for category -->
             </div>
-            <button id="addWebsiteBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-                Add Website to Display
+            <button id="checkWebsiteBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-102 text-lg">
+                Check Website
             </button>
-            <div id="messageBox" class="mt-4 p-3 rounded-lg text-sm text-center hidden"></div>
+            <div id="messageBox" class="mt-6 p-4 rounded-lg text-sm text-center hidden"></div>
         </div>
 
-        <!-- Import Websites Section -->
-        <div class="mb-8 p-6 bg-orange-50 rounded-lg shadow-sm border border-orange-200">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Import Websites</h2>
-            <p class="text-sm text-orange-700 mb-4">
-                Paste your websites here (URL,Category per line). This will update the display temporarily but will NOT save to your `websites.txt` file.
-            </p>
-            <textarea id="importWebsitesTextarea" rows="6" placeholder="Paste your websites here, one per line, e.g.:&#10;https://www.google.com,Search Engines&#10;https://github.com,Development" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"></textarea>
-            <button id="importWebsitesBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-                Import Websites to Display
-            </button>
-        </div>
+        <!-- Main Categories Section Header -->
+        <h2 class="main-section-header mb-8">Website Categories</h2>
 
-        <!-- Website Categories Section -->
-        <div id="categoriesContainer" class="space-y-4">
+        <!-- Website Categories Grid -->
+        <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Categories will be rendered here by JavaScript -->
         </div>
+
+        <div id="statusMessageBox" class="mt-12 p-4 rounded-lg text-base text-center hidden mx-auto max-w-md"></div>
     </div>
 
     <script>
-        // Current in-memory representation of websites.
-        // This will be loaded from websites.txt and updated by the temporary add/delete functions.
-        let currentWebsites = {};
+        let currentWebsites = {}; // In-memory representation of websites loaded from websites.txt
 
-        // Function to show messages in the message box
-        function showMessageBox(message, type = 'info') {
-            const messageBox = document.getElementById('messageBox');
-            messageBox.textContent = message;
-            messageBox.className = 'mt-4 p-3 rounded-lg text-sm text-center'; // Reset classes
+        // Function to show messages in a dedicated status box (distinct from the main messageBox)
+        function showStatusMessage(message, type = 'info') {
+            const statusMessageBox = document.getElementById('statusMessageBox');
+            statusMessageBox.textContent = message;
+            statusMessageBox.className = 'mt-12 p-4 rounded-lg text-base text-center mx-auto max-w-md'; // Reset classes
             if (type === 'success') {
-                messageBox.classList.add('bg-green-100', 'text-green-700');
+                statusMessageBox.classList.add('bg-green-100', 'text-green-700');
             } else if (type === 'error') {
-                messageBox.classList.add('bg-red-100', 'text-red-700');
-            } else {
-                messageBox.classList.add('bg-blue-100', 'text-blue-700');
+                statusMessageBox.classList.add('bg-red-100', 'text-red-700');
+            } else { // info or default
+                statusMessageBox.classList.add('bg-blue-100', 'text-blue-700');
             }
-            messageBox.classList.remove('hidden');
+            statusMessageBox.classList.remove('hidden');
             setTimeout(() => {
-                messageBox.classList.add('hidden');
-            }, 3000); // Hide after 3 seconds
+                statusMessageBox.classList.add('hidden');
+            }, 5000); // Hide after 5 seconds
         }
 
         // Function to fetch and parse websites from websites.txt
         async function fetchWebsitesFromFile() {
             try {
-                // Explicitly resolve the URL to avoid potential parsing issues in some environments
                 const fileUrl = new URL('websites.txt', window.location.href).toString();
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.warn("websites.txt not found. Starting with an empty list.");
-                        showMessageBox("websites.txt not found. Please create it in your repository.", "info");
+                        showStatusMessage("websites.txt not found. Please create it in your repository with URL,Category entries.", "info");
                         return {};
                     }
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -162,68 +168,76 @@
                     if (!parsedWebsites[category]) {
                         parsedWebsites[category] = [];
                     }
-                    // Prevent duplicates from the file itself
                     if (!parsedWebsites[category].some(link => link.url === url)) {
                         parsedWebsites[category].push({ url: url, title: title });
                     }
                 }
                 if (errorCount > 0) {
-                    showMessageBox(`Loaded websites with ${errorCount} error(s) from websites.txt. Check console for details.`, 'error');
+                    showStatusMessage(`Loaded websites with ${errorCount} error(s) from websites.txt. Check console for details.`, 'error');
                 } else {
-                    showMessageBox("Websites loaded successfully from websites.txt!", "success");
+                    showStatusMessage("Websites loaded successfully from websites.txt!", "success");
                 }
                 return parsedWebsites;
 
             } catch (error) {
                 console.error("Error fetching websites.txt:", error);
-                showMessageBox(`Error loading websites from file: ${error.message}`, 'error');
-                return {}; // Return empty object on error
+                showStatusMessage(`Error loading websites from file: ${error.message}`, 'error');
+                return {};
             }
         }
 
-        // Function to render websites
         function renderWebsites(websites) {
             const categoriesContainer = document.getElementById('categoriesContainer');
-            categoriesContainer.innerHTML = ''; // Clear previous content
+            categoriesContainer.innerHTML = '';
 
             if (Object.keys(websites).length === 0) {
                 categoriesContainer.innerHTML = `
-                    <p class="text-center text-gray-500 text-lg mt-8">No websites loaded. Please add some via the import section or edit websites.txt.</p>
+                    <p class="col-span-full text-center text-gray-500 text-lg mt-8 p-4 bg-gray-50 rounded-lg">No websites loaded. Please add some to your websites.txt file.</p>
                 `;
                 return;
             }
 
-            // Sort categories alphabetically
             const sortedCategories = Object.keys(websites).sort((a, b) => a.localeCompare(b));
 
+            // Define a set of pastel colors for category cards
+            const pastelColors = [
+                { bg: 'bg-blue-50', border: 'border-blue-100', headerBg: 'bg-blue-100', headerHover: 'hover:bg-blue-200', text: 'text-blue-800', icon: 'text-blue-600', link: 'text-blue-700' },
+                { bg: 'bg-green-50', border: 'border-green-100', headerBg: 'bg-green-100', headerHover: 'hover:bg-green-200', text: 'text-green-800', icon: 'text-green-600', link: 'text-green-700' },
+                { bg: 'bg-purple-50', border: 'border-purple-100', headerBg: 'bg-purple-100', headerHover: 'hover:bg-purple-200', text: 'text-purple-800', icon: 'text-purple-600', link: 'text-purple-700' },
+                { bg: 'bg-pink-50', border: 'border-pink-100', headerBg: 'bg-pink-100', headerHover: 'hover:bg-pink-200', text: 'text-pink-800', icon: 'text-pink-600', link: 'text-pink-700' },
+                { bg: 'bg-yellow-50', border: 'border-yellow-100', headerBg: 'bg-yellow-100', headerHover: 'hover:bg-yellow-200', text: 'text-yellow-800', icon: 'text-yellow-600', link: 'text-yellow-700' },
+            ];
+            let colorIndex = 0;
+
             sortedCategories.forEach(category => {
+                const colors = pastelColors[colorIndex % pastelColors.length];
+                colorIndex++;
+
                 const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'bg-teal-50 rounded-lg shadow-sm overflow-hidden'; /* Changed from bg-gray-100 */
+                categoryDiv.className = `${colors.bg} rounded-xl shadow-sm overflow-hidden border ${colors.border}`; /* Adjusted shadow for subtlety */
 
                 const header = document.createElement('div');
-                header.className = 'flex justify-between items-center p-4 cursor-pointer select-none bg-teal-200 hover:bg-teal-300 transition duration-200 ease-in-out rounded-t-lg'; /* Changed from bg-gray-200/300 */
+                header.className = `flex justify-between items-center p-5 cursor-pointer select-none ${colors.headerBg} ${colors.headerHover} transition duration-200 ease-in-out rounded-t-xl`;
                 header.innerHTML = `
-                    <h3 class="text-lg font-semibold text-gray-800">${category}</h3>
-                    <span class="text-gray-600 text-2xl font-bold icon-rotate">+</span>
+                    <h3 class="text-xl font-semibold ${colors.text}">${category}</h3>
+                    <span class="${colors.icon} text-3xl font-bold arrow-icon">&#x2304;</span> <!-- Unicode for down arrow -->
                 `;
                 categoryDiv.appendChild(header);
 
                 const contentDiv = document.createElement('div');
-                contentDiv.className = 'category-content-scroll'; // Custom class for scroll and collapse
-                contentDiv.style.maxHeight = '0'; // Initially collapsed
+                contentDiv.className = 'category-content-scroll';
+                contentDiv.style.maxHeight = '0';
 
                 const ul = document.createElement('ul');
-                ul.className = 'list-disc list-inside space-y-2 p-4 pt-0'; // Padding adjusted for scroll container
+                ul.className = 'list-disc list-inside space-y-3 px-8 py-4';
 
-                // Sort links alphabetically by title
                 const sortedLinks = websites[category].sort((a, b) => a.title.localeCompare(b.title));
 
                 sortedLinks.forEach(link => {
                     const li = document.createElement('li');
-                    li.className = 'flex justify-between items-center text-gray-700';
+                    li.className = 'flex items-center text-gray-700 text-base';
                     li.innerHTML = `
-                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-indigo-700 hover:underline truncate flex-grow mr-2">${link.title}</a> <!-- Changed from text-blue-600 -->
-                        <button data-url="${link.url}" data-category="${category}" class="delete-btn text-red-500 hover:text-red-700 text-sm font-semibold p-1 rounded-md transition duration-200">Delete</button>
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="${colors.link} hover:underline truncate flex-grow">${link.title}</a>
                     `;
                     ul.appendChild(li);
                 });
@@ -232,143 +246,56 @@
                 categoryDiv.appendChild(contentDiv);
                 categoriesContainer.appendChild(categoryDiv);
 
-                // Add event listener for collapsing/expanding
                 header.addEventListener('click', () => {
                     const isExpanded = contentDiv.classList.toggle('expanded');
-                    const icon = header.querySelector('.icon-rotate');
-                    icon.classList.toggle('rotated', isExpanded); // Rotate icon for visual feedback
-                });
-            });
-
-            // Add event listeners for delete buttons
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const urlToDelete = event.target.dataset.url;
-                    const categoryToDeleteFrom = event.target.dataset.category;
-                    deleteWebsite(categoryToDeleteFrom, urlToDelete);
+                    const icon = header.querySelector('.arrow-icon');
+                    icon.classList.toggle('rotated', isExpanded);
                 });
             });
         }
 
-        // Function to add a single new website to the in-memory data
-        function addSingleWebsiteToMemory(url, category) {
-            if (!url || !category) {
-                return { success: false, message: 'URL and Category cannot be empty.' };
-            }
-
-            // Basic URL validation and normalization
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url; // Prepend https:// if missing
-            }
-
-            // Capitalize first letter of category for consistent display
-            category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
-
-            // Get the title from the URL (simple approach, could be improved with fetch)
-            let title;
-            try {
-                const urlObj = new URL(url);
-                title = urlObj.hostname.replace('www.', ''); // Use hostname as title
-            } catch (e) {
-                return { success: false, message: `Invalid URL: ${url}` };
-            }
-
-            // Check if URL already exists in the category
-            if (currentWebsites[category] && currentWebsites[category].some(link => link.url === url)) {
-                return { success: false, message: 'This URL already exists in this category!' };
-            }
-
-            if (!currentWebsites[category]) {
-                currentWebsites[category] = [];
-            }
-            currentWebsites[category].push({ url: url, title: title });
-
-            // Re-render the display
-            renderWebsites(currentWebsites);
-
-            return { success: true, message: 'Added to display.' };
-        }
-
-        // Event listener for adding a single website
-        document.getElementById('addWebsiteBtn').addEventListener('click', () => {
+        // Event listener for checking website status
+        document.getElementById('checkWebsiteBtn').addEventListener('click', () => {
             const urlInput = document.getElementById('websiteUrl');
-            const categoryInput = document.getElementById('websiteCategory');
-            const url = urlInput.value.trim();
-            const category = categoryInput.value.trim();
+            let url = urlInput.value.trim(); // Only URL input now
 
-            const result = addSingleWebsiteToMemory(url, category);
+            if (!url) {
+                showStatusMessage('Please enter a website URL to check.', 'error');
+                return;
+            }
 
-            if (result.success) {
-                showMessageBox('Website added to display (not saved to file)!', 'success');
-                urlInput.value = '';
-                categoryInput.value = '';
+            // Normalize URL for consistent checking
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            let found = false;
+            let foundCategory = '';
+
+            // Iterate through all categories and links in currentWebsites
+            for (const cat in currentWebsites) {
+                if (currentWebsites[cat].some(link => link.url === url)) {
+                    found = true;
+                    foundCategory = cat;
+                    break; // Found it, no need to check further
+                }
+            }
+
+            if (found) {
+                showStatusMessage(`Website "${url}" is already listed in the "${foundCategory}" category.`, 'info');
             } else {
-                showMessageBox(result.message, 'error');
+                showStatusMessage(`Website "${url}" is new and not currently listed in your directory.`, 'success');
             }
+
+            // Clear input after check
+            urlInput.value = '';
         });
-
-        // Event listener for importing multiple websites
-        document.getElementById('importWebsitesBtn').addEventListener('click', () => {
-            const textarea = document.getElementById('importWebsitesTextarea');
-            const lines = textarea.value.trim().split('\n');
-            let importedCount = 0;
-            let errorCount = 0;
-
-            for (const line of lines) {
-                const trimmedLine = line.trim();
-                if (!trimmedLine) continue; // Skip empty lines
-
-                const parts = trimmedLine.split(',');
-                if (parts.length < 2) {
-                    console.warn(`Skipping malformed line: ${trimmedLine}`);
-                    errorCount++;
-                    continue;
-                }
-
-                const url = parts[0].trim();
-                const category = parts.slice(1).join(',').trim(); // Rejoin if category has commas
-
-                const result = addSingleWebsiteToMemory(url, category);
-                if (result.success) {
-                    importedCount++;
-                } else {
-                    console.warn(`Failed to import: ${url} - ${result.message}`);
-                    errorCount++;
-                }
-            }
-
-            if (importedCount > 0) {
-                showMessageBox(`Successfully imported ${importedCount} website(s) to display. ${errorCount > 0 ? `(${errorCount} failed)` : ''} (not saved to file!)`, 'success');
-                textarea.value = ''; // Clear textarea after import
-            } else if (errorCount > 0) {
-                showMessageBox(`No websites imported to display. ${errorCount} failed due to errors.`, 'error');
-            } else {
-                showMessageBox('No valid websites found to import.', 'info');
-            }
-        });
-
-        // Function to delete a website from the in-memory data
-        function deleteWebsite(category, url) {
-            if (currentWebsites[category]) {
-                currentWebsites[category] = currentWebsites[category].filter(link => link.url !== url);
-
-                // If category becomes empty, remove it
-                if (currentWebsites[category].length === 0) {
-                    delete currentWebsites[category];
-                }
-
-                // Re-render the display
-                renderWebsites(currentWebsites);
-                showMessageBox('Website deleted from display (not saved to file)!', 'success');
-            }
-        }
 
         // On page load, fetch websites from the text file
         window.onload = async function() {
             currentWebsites = await fetchWebsitesFromFile();
             renderWebsites(currentWebsites);
         };
-
     </script>
 </body>
 </html>

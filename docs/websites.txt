@@ -1,4 +1,3 @@
-URL,Category
 https://www.google.com,Search
 https://chat.openai.com,AI Tools
 https://www.youtube.com,Entertainment

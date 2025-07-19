@@ -4,7 +4,6 @@ https://www.mermaidchart.com/app/projects, AI & ML Development Tools
 https://www.promptingguide.ai/introduction/examples, AI & ML Development Tools
 https://www.neuronpedia.org/, AI & ML Development Tools
 https://nustudio.io/, AI & ML Development Tools
-https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle®Dataset=reg-plane&learningRate=0.03®ularizationRate=0&noise=0&networkShape=4,2&seed=0.59445&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false, AI & ML Development Tools
 https://docs.unsloth.ai/, AI & ML Development Tools
 https://www.confident-ai.com/, AI & ML Development Tools
 https://www.pinecone.io/, AI & ML Development Tools

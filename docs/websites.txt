@@ -2,3 +2,10 @@ https://www.google.com,Search
 https://chat.openai.com,AI Tools
 https://www.youtube.com,Entertainment
 https://www.linkedin.com/in/amithmg6/,Social
+https://www.mermaidchart.com/app/projects,AI Tools
+https://www.promptingguide.ai/introduction/examples,AI Tools
+https://towardsdatascience.com/attention-is-all-you-need-discovering-the-transformer-paper-73e5ff5e0634/,Blogs
+https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf,Reseach Papers
+https://aiengineering.beehiiv.com/p/hands-on-build-a-pdf-rag-agent,Blogs
+https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation,Blogs
+https://www.neuronpedia.org/,AI Tools

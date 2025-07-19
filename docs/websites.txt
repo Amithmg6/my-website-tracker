@@ -21,3 +21,25 @@ https://amithmg6.github.io/vecdb-learn/,MY WebPages
 https://amithmg6.github.io/ml-explorer/,MY WebPages
 https://amithmg6.github.io/best-datascience-upgrades/,MY WebPages
 https://amithmg6.github.io/my-website-tracker/,MY WebPages
+https://promptadvance.club/,AI Tools
+https://www.presentations.ai/,AI Tools
+https://fileinfo.com/,Essential Tools
+https://livevideo.manning.com/,Blogs
+https://nustudio.io/,AI Tools
+https://probability4datascience.com/index.html,Blogs
+https://experiments.withgoogle.com/,AI Tools
+https://qconsf.com/recap/nov2024,Blogs
+https://ays-pro.com/,Tools
+https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.59445&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false,AI Tools
+https://www.freewordcloudgenerator.com/generatewordcloud#google_vignette,Tools
+https://www.iloveimg.com/,Tools
+https://www.befunky.com/,Tools
+https://www.timeanddate.com/,Tools
+https://saturncloud.io/why-sc/data-science-leaders/,Tools
+https://v2.spacy.io/,Tools
+https://docs.unsloth.ai/,AI Tools
+https://deepai.org/,AI Tools
+https://simplified.com/,AI Tools
+https://ffmpeg.org/,Tools
+https://www.mgid.com/,Tools
+

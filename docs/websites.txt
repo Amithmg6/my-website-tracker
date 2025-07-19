@@ -9,3 +9,15 @@ https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd05
 https://aiengineering.beehiiv.com/p/hands-on-build-a-pdf-rag-agent,Blogs
 https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation,Blogs
 https://www.neuronpedia.org/,AI Tools
+https://amithmg6.github.io/AmithMG/,MY WebPages
+https://amithmg6.github.io/AmithLanguageLab/,MY WebPages
+https://amithmg6.github.io/tweet-sentiment-frontend/,MY WebPages
+https://amithmg6.github.io/tweet-sentiment-backend/,MY WebPages
+https://amithmg6.github.io/fake-news-frontend/,MY WebPages
+https://amithmg6.github.io/llm-comparisons-learning/,MY WebPages
+https://amithmg6.github.io/toxic-txt-clssify-frontend/,MY WebPages
+https://amithmg6.github.io/swot1/,MY WebPages
+https://amithmg6.github.io/vecdb-learn/,MY WebPages
+https://amithmg6.github.io/ml-explorer/,MY WebPages
+https://amithmg6.github.io/best-datascience-upgrades/,MY WebPages
+https://amithmg6.github.io/my-website-tracker/,MY WebPages

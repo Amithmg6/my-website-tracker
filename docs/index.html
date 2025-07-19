@@ -21,32 +21,35 @@
         .arrow-icon.rotated {
             transform: rotate(180deg); /* Rotates arrow to point up */
         }
-        /* Custom scrollbar for category content */
+        /* Custom scrollbar for category content - REMOVED SCROLL STYLES */
         .category-content-scroll {
             max-height: 0; /* Initially collapsed */
             overflow: hidden;
             transition: max-height 0.5s ease-out, padding-top 0.5s ease-out, padding-bottom 0.5s ease-out;
         }
         .category-content-scroll.expanded {
-            max-height: 400px; /* Increased height to show more links comfortably */
-            overflow-y: auto; /* Enable vertical scroll */
+            max-height: fit-content; /* Removed fixed height, now expands to fit content */
+            overflow-y: visible; /* No scrollbar */
             padding-top: 1rem; /* More padding when expanded */
             padding-bottom: 1rem;
         }
+        /* Removed scrollbar specific styling as it's no longer needed */
+        /*
         .category-content-scroll::-webkit-scrollbar {
             width: 8px;
         }
         .category-content-scroll::-webkit-scrollbar-track {
-            background: #e9ecef; /* Lighter track */
+            background: #e9ecef;
             border-radius: 10px;
         }
         .category-content-scroll::-webkit-scrollbar-thumb {
-            background: #adb5bd; /* Muted gray thumb */
+            background: #adb5bd;
             border-radius: 10px;
         }
         .category-content-scroll::-webkit-scrollbar-thumb:hover {
-            background: #6c757d; /* Darker on hover */
+            background: #6c757d;
         }
+        */
         /* Styling for the main section headers like "North India" in the image */
         .main-section-header {
             font-size: 1.875rem; /* text-3xl */
@@ -165,7 +168,7 @@
                     if (!parsedWebsites[category]) {
                         parsedWebsites[category] = [];
                     }
-                    if (!parsedWebsites[category].some(link => link.url === url)) {
+                    if (!parsedWebses[category].some(link => link.url === url)) {
                         parsedWebsites[category].push({ url: url, title: title });
                     }
                 }
@@ -211,14 +214,13 @@
                 colorIndex++;
 
                 const categoryDiv = document.createElement('div');
-                // No grid classes here, just standard block styling for vertical stacking
                 categoryDiv.className = `${colors.bg} rounded-xl shadow-sm overflow-hidden border ${colors.border}`;
 
                 const header = document.createElement('div');
                 header.className = `flex justify-between items-center p-5 cursor-pointer select-none ${colors.headerBg} ${colors.headerHover} transition duration-200 ease-in-out rounded-t-xl`;
                 header.innerHTML = `
                     <h3 class="text-xl font-semibold ${colors.text}">${category}</h3>
-                    <span class="${colors.icon} text-3xl font-bold arrow-icon">&#x2304;</span> <!-- Unicode for down arrow -->
+                    <span class="${colors.icon} text-3xl font-bold arrow-icon">&#x2304;</span>
                 `;
                 categoryDiv.appendChild(header);
 
@@ -226,9 +228,8 @@
                 contentDiv.className = 'category-content-scroll';
                 contentDiv.style.maxHeight = '0';
 
-                // Changed to <ol> for numbered list
                 const ol = document.createElement('ol');
-                ol.className = 'list-decimal list-inside space-y-3 px-8 py-4'; /* list-decimal for numbered list */
+                ol.className = 'list-decimal list-inside space-y-3 px-8 py-4';
 
                 const sortedLinks = websites[category].sort((a, b) => a.title.localeCompare(b.title));
 
@@ -241,7 +242,7 @@
                     ol.appendChild(li);
                 });
 
-                contentDiv.appendChild(ol); // Append ordered list
+                contentDiv.appendChild(ol);
                 categoryDiv.appendChild(contentDiv);
                 categoriesContainer.appendChild(categoryDiv);
 
@@ -253,7 +254,6 @@
             });
         }
 
-        // Event listener for checking website status
         document.getElementById('checkWebsiteBtn').addEventListener('click', () => {
             const urlInput = document.getElementById('websiteUrl');
             let url = urlInput.value.trim();

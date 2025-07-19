@@ -76,9 +76,8 @@
             <p class="text-base text-gray-700 mb-6 leading-relaxed">
                 Enter a website URL to check if it's already listed in your directory.
             </p>
-            <div class="grid grid-cols-1 gap-6 mb-6"> <!-- Removed md:grid-cols-3 and col-span-1 md:col-span-2 -->
+            <div class="grid grid-cols-1 gap-6 mb-6">
                 <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700 placeholder-gray-400 text-base" required>
-                <!-- Removed input for category -->
             </div>
             <button id="checkWebsiteBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-102 text-lg">
                 Check Website
@@ -89,8 +88,8 @@
         <!-- Main Categories Section Header -->
         <h2 class="main-section-header mb-8">Website Categories</h2>
 
-        <!-- Website Categories Grid -->
-        <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Website Categories Container (no grid, items will stack) -->
+        <div id="categoriesContainer" class="space-y-8"> <!-- Increased space between sections -->
             <!-- Categories will be rendered here by JavaScript -->
         </div>
 
@@ -100,25 +99,23 @@
     <script>
         let currentWebsites = {}; // In-memory representation of websites loaded from websites.txt
 
-        // Function to show messages in a dedicated status box (distinct from the main messageBox)
         function showStatusMessage(message, type = 'info') {
             const statusMessageBox = document.getElementById('statusMessageBox');
             statusMessageBox.textContent = message;
-            statusMessageBox.className = 'mt-12 p-4 rounded-lg text-base text-center mx-auto max-w-md'; // Reset classes
+            statusMessageBox.className = 'mt-12 p-4 rounded-lg text-base text-center mx-auto max-w-md';
             if (type === 'success') {
                 statusMessageBox.classList.add('bg-green-100', 'text-green-700');
             } else if (type === 'error') {
                 statusMessageBox.classList.add('bg-red-100', 'text-red-700');
-            } else { // info or default
+            } else {
                 statusMessageBox.classList.add('bg-blue-100', 'text-blue-700');
             }
             statusMessageBox.classList.remove('hidden');
             setTimeout(() => {
                 statusMessageBox.classList.add('hidden');
-            }, 5000); // Hide after 5 seconds
+            }, 5000);
         }
 
-        // Function to fetch and parse websites from websites.txt
         async function fetchWebsitesFromFile() {
             try {
                 const fileUrl = new URL('websites.txt', window.location.href).toString();
@@ -214,7 +211,8 @@
                 colorIndex++;
 
                 const categoryDiv = document.createElement('div');
-                categoryDiv.className = `${colors.bg} rounded-xl shadow-sm overflow-hidden border ${colors.border}`; /* Adjusted shadow for subtlety */
+                // No grid classes here, just standard block styling for vertical stacking
+                categoryDiv.className = `${colors.bg} rounded-xl shadow-sm overflow-hidden border ${colors.border}`;
 
                 const header = document.createElement('div');
                 header.className = `flex justify-between items-center p-5 cursor-pointer select-none ${colors.headerBg} ${colors.headerHover} transition duration-200 ease-in-out rounded-t-xl`;
@@ -228,8 +226,9 @@
                 contentDiv.className = 'category-content-scroll';
                 contentDiv.style.maxHeight = '0';
 
-                const ul = document.createElement('ul');
-                ul.className = 'list-disc list-inside space-y-3 px-8 py-4';
+                // Changed to <ol> for numbered list
+                const ol = document.createElement('ol');
+                ol.className = 'list-decimal list-inside space-y-3 px-8 py-4'; /* list-decimal for numbered list */
 
                 const sortedLinks = websites[category].sort((a, b) => a.title.localeCompare(b.title));
 
@@ -239,10 +238,10 @@
                     li.innerHTML = `
                         <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="${colors.link} hover:underline truncate flex-grow">${link.title}</a>
                     `;
-                    ul.appendChild(li);
+                    ol.appendChild(li);
                 });
 
-                contentDiv.appendChild(ul);
+                contentDiv.appendChild(ol); // Append ordered list
                 categoryDiv.appendChild(contentDiv);
                 categoriesContainer.appendChild(categoryDiv);
 
@@ -257,14 +256,13 @@
         // Event listener for checking website status
         document.getElementById('checkWebsiteBtn').addEventListener('click', () => {
             const urlInput = document.getElementById('websiteUrl');
-            let url = urlInput.value.trim(); // Only URL input now
+            let url = urlInput.value.trim();
 
             if (!url) {
                 showStatusMessage('Please enter a website URL to check.', 'error');
                 return;
             }
 
-            // Normalize URL for consistent checking
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = 'https://' + url;
             }
@@ -272,12 +270,11 @@
             let found = false;
             let foundCategory = '';
 
-            // Iterate through all categories and links in currentWebsites
             for (const cat in currentWebsites) {
                 if (currentWebsites[cat].some(link => link.url === url)) {
                     found = true;
                     foundCategory = cat;
-                    break; // Found it, no need to check further
+                    break;
                 }
             }
 
@@ -287,11 +284,9 @@
                 showStatusMessage(`Website "${url}" is new and not currently listed in your directory.`, 'success');
             }
 
-            // Clear input after check
             urlInput.value = '';
         });
 
-        // On page load, fetch websites from the text file
         window.onload = async function() {
             currentWebsites = await fetchWebsitesFromFile();
             renderWebsites(currentWebsites);

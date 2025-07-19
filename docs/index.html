@@ -7,11 +7,11 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght='400;500;600;700'&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3ffef; /* Light green-gray background */
+            background-color: #e2f0f4; /* Light blue-green background */
         }
         /* Custom CSS for the plus/minus icon transition */
         .icon-rotate {
@@ -27,7 +27,7 @@
             transition: max-height 0.5s ease-out, padding-top 0.5s ease-out, padding-bottom 0.5s ease-out;
         }
         .category-content-scroll.expanded {
-            max-height: 300px; /* Max height when expanded, adjust as needed */
+            max-height: 200px; /* Adjusted max height to comfortably show 5-6 links */
             overflow-y: auto; /* Enable vertical scroll */
             padding-top: 0.5rem; /* Add some padding when expanded */
             padding-bottom: 0.5rem;
@@ -54,30 +54,30 @@
         <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">Website Tracker</h1>
 
         <!-- Add New Website Section - Now for in-memory display only -->
-        <div class="mb-8 p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-200">
+        <div class="mb-8 p-6 bg-orange-50 rounded-lg shadow-sm border border-orange-200">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Add New Website (Temporary)</h2>
-            <p class="text-sm text-yellow-700 mb-4">
+            <p class="text-sm text-orange-700 mb-4">
                 Note: Websites added here are for temporary display only and will NOT be saved to your `websites.txt` file.
                 To permanently add or delete websites, please edit the `websites.txt` file in your GitHub repository.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="col-span-1 md:col-span-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <input type="text" id="websiteCategory" placeholder="Category (e.g., Work, Social)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="url" id="websiteUrl" placeholder="Website URL (e.g., https://example.com)" class="col-span-1 md:col-span-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <input type="text" id="websiteCategory" placeholder="Category (e.g., Work, Social)" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
-            <button id="addWebsiteBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            <button id="addWebsiteBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                 Add Website to Display
             </button>
             <div id="messageBox" class="mt-4 p-3 rounded-lg text-sm text-center hidden"></div>
         </div>
 
-        <!-- Import Websites Section - Now for in-memory display only -->
-        <div class="mb-8 p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-200">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Import Websites (Temporary)</h2>
-            <p class="text-sm text-yellow-700 mb-4">
+        <!-- Import Websites Section -->
+        <div class="mb-8 p-6 bg-orange-50 rounded-lg shadow-sm border border-orange-200">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Import Websites</h2>
+            <p class="text-sm text-orange-700 mb-4">
                 Paste your websites here (URL,Category per line). This will update the display temporarily but will NOT save to your `websites.txt` file.
             </p>
-            <textarea id="importWebsitesTextarea" rows="6" placeholder="Paste your websites here, one per line, e.g.:&#10;https://www.google.com,Search Engines&#10;https://github.com,Development" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"></textarea>
-            <button id="importWebsitesBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            <textarea id="importWebsitesTextarea" rows="6" placeholder="Paste your websites here, one per line, e.g.:&#10;https://www.google.com,Search Engines&#10;https://github.com,Development" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"></textarea>
+            <button id="importWebsitesBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                 Import Websites to Display
             </button>
         </div>
@@ -114,7 +114,9 @@
         // Function to fetch and parse websites from websites.txt
         async function fetchWebsitesFromFile() {
             try {
-                const response = await fetch('websites.txt');
+                // Explicitly resolve the URL to avoid potential parsing issues in some environments
+                const fileUrl = new URL('websites.txt', window.location.href).toString();
+                const response = await fetch(fileUrl);
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.warn("websites.txt not found. Starting with an empty list.");
@@ -196,10 +198,10 @@
 
             sortedCategories.forEach(category => {
                 const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'bg-gray-100 rounded-lg shadow-sm overflow-hidden';
+                categoryDiv.className = 'bg-teal-50 rounded-lg shadow-sm overflow-hidden'; /* Changed from bg-gray-100 */
 
                 const header = document.createElement('div');
-                header.className = 'flex justify-between items-center p-4 cursor-pointer select-none bg-gray-200 hover:bg-gray-300 transition duration-200 ease-in-out rounded-t-lg';
+                header.className = 'flex justify-between items-center p-4 cursor-pointer select-none bg-teal-200 hover:bg-teal-300 transition duration-200 ease-in-out rounded-t-lg'; /* Changed from bg-gray-200/300 */
                 header.innerHTML = `
                     <h3 class="text-lg font-semibold text-gray-800">${category}</h3>
                     <span class="text-gray-600 text-2xl font-bold icon-rotate">+</span>
@@ -220,7 +222,7 @@
                     const li = document.createElement('li');
                     li.className = 'flex justify-between items-center text-gray-700';
                     li.innerHTML = `
-                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline truncate flex-grow mr-2">${link.title}</a>
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-indigo-700 hover:underline truncate flex-grow mr-2">${link.title}</a> <!-- Changed from text-blue-600 -->
                         <button data-url="${link.url}" data-category="${category}" class="delete-btn text-red-500 hover:text-red-700 text-sm font-semibold p-1 rounded-md transition duration-200">Delete</button>
                     `;
                     ul.appendChild(li);

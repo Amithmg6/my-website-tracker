@@ -42,4 +42,22 @@ https://deepai.org/,AI Tools
 https://simplified.com/,AI Tools
 https://ffmpeg.org/,Tools
 https://www.mgid.com/,Tools
-
+https://www.confident-ai.com/,AI Tools
+https://www.pinecone.io/,AI Tools
+https://picovoice.ai/,AI Tools
+https://www.ilovepdf.com/,Tools
+https://openreview.net/,Blogs
+https://datasets-benchmarks-proceedings.neurips.cc/paper/2021,Blogs
+https://render.com/,Tools
+https://fakeyou.com/,Tools
+https://www.superdatascience.com/,Learnings
+https://creatomate.com/,AI Tools
+https://projector.tensorflow.org/,AI Tools
+https://www.gradio.app/,AI Tools
+https://scholar.google.co.in/,Tools
+https://piktochart.com/,AI Tools
+https://www.marktechpost.com/,AI Tools
+https://www.bannerbear.com/,AI Tools
+https://promptsty.com/,AI Tools
+https://jalammar.github.io/,Blogs
+https://www.tensorflow.org/,Tools

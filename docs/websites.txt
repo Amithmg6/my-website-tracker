@@ -12,6 +12,7 @@ https://picovoice.ai/, AI & ML Development Tools
 https://projector.tensorflow.org/, AI & ML Development Tools
 https://www.gradio.app/, AI & ML Development Tools
 https://promptsty.com/, AI & ML Development Tools
+https://jina.ai/embeddings, AI & ML Development Tools
 https://www.tensorflow.org/, AI & ML Development Tools
 https://promptadvance.club/, AI & ML Applications
 https://www.presentations.ai/, AI & ML Applications

@@ -25,6 +25,8 @@ https://piktochart.com/, AI & ML Applications
 https://www.marktechpost.com/, AI & ML Applications
 https://www.bannerbear.com/, AI & ML Applications
 https://towardsdatascience.com/attention-is-all-you-need-discovering-the-transformer-paper-73e5ff5e0634/, Data Science & Machine Learning Resources
+https://arxiv.org/pdf/2503.01151, Data Science & Machine Learning Resources
+https://arxiv.org/html/2402.01613v2, Data Science & Machine Learning Resources
 https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf, Data Science & Machine Learning Resources (more specific than "Research Papers")
 https://aiengineering.beehiiv.com/p/hands-on-build-a-pdf-rag-agent, Data Science & Machine Learning Resources
 https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation, Data Science & Machine Learning Resources

@@ -27,6 +27,7 @@ https://towardsdatascience.com/attention-is-all-you-need-discovering-the-transfo
 https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf, Data Science & Machine Learning Resources (more specific than "Research Papers")
 https://aiengineering.beehiiv.com/p/hands-on-build-a-pdf-rag-agent, Data Science & Machine Learning Resources
 https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation, Data Science & Machine Learning Resources
+https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison, Data Science & Machine Learning Resources
 https://livevideo.manning.com/, Data Science & Machine Learning Resources
 https://probability4datascience.com/index.html, Data Science & Machine Learning Resources
 https://qconsf.com/recap/nov2024, Data Science & Machine Learning Resources

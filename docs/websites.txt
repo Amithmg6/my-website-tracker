@@ -45,6 +45,7 @@ https://amithmg6.github.io/vecdb-learn/, Personal Projects & Portfolios
 https://amithmg6.github.io/ml-explorer/, Personal Projects & Portfolios
 https://amithmg6.github.io/best-datascience-upgrades/, Personal Projects & Portfolios
 https://amithmg6.github.io/my-website-tracker/, Personal Projects & Portfolios
+https://amithmg6.github.io/vector-embeddings/, Personal Projects & Portfolios
 https://fileinfo.com/, Productivity & Utility Tools
 https://ays-pro.com/, Productivity & Utility Tools
 https://www.freewordcloudgenerator.com/generatewordcloud#google_vignette, Productivity & Utility Tools
